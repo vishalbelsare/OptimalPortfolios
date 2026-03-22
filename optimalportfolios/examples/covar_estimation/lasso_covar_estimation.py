@@ -16,7 +16,7 @@ import yfinance as yf
 import qis as qis
 
 from optimalportfolios import LassoModel, LassoModelType
-from optimalportfolios import CovarEstimatorType, FactorCovarEstimator
+from optimalportfolios import FactorCovarEstimator
 
 
 # ─────────────────────────────────────────────
@@ -81,7 +81,7 @@ def run_local_test(local_test: LocalTests):
         reg_lambda=1e-6,
         span=52,
         demean=False,
-        solver='ECOS_BB',
+        solver='CLARABEL',
     )
 
     if local_test == LocalTests.LASSO_BETAS:
@@ -140,7 +140,6 @@ def run_local_test(local_test: LocalTests):
 
         # monthly factor returns, monthly factor covar span
         estimator_monthly = FactorCovarEstimator(
-            covar_estimator_type=CovarEstimatorType.LASSO,
             lasso_model=lasso_model,
             factor_returns_freq='ME',
             factor_covar_span=12,
@@ -168,7 +167,6 @@ def run_local_test(local_test: LocalTests):
 
         # (c) weekly factor returns with weekly and mixed asset returns
         estimator_weekly = FactorCovarEstimator(
-            covar_estimator_type=CovarEstimatorType.LASSO,
             lasso_model=lasso_model,
             factor_returns_freq='W-WED',
             factor_covar_span=52,
